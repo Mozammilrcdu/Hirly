@@ -94,48 +94,63 @@ const Header = () => {
         </button>
 
         {/* Mobile Dropdown */}
-        {menuOpen && (
-          <div className="absolute top-full left-0 w-full flex flex-col items-center gap-4 py-6 bg-transparent backdrop-blur-sm md:hidden z-50">
-            <Link to="/jobs" onClick={() => setMenuOpen(false)}>
-              <Button className="rounded-full bg-blue-500 hover:bg-blue-600 text-white w-40">
-                Latest Jobs
-              </Button>
-            </Link>
+       {menuOpen && (
+        <div className="absolute top-full left-0 w-full flex flex-col items-center gap-4 py-6 bg-white/10 backdrop-blur-md md:hidden z-50">
+          <Link to="/jobs" onClick={() => setMenuOpen(false)}>
+            <Button className="rounded-full bg-blue-500 hover:bg-blue-600 text-white w-40">
+              Latest Jobs
+            </Button>
+          </Link>
 
-            <SignedOut>
-              <Button
-                variant="outline"
-                className="w-40"
-                onClick={() => {
-                  setShowSignIn(true);
-                  setMenuOpen(false);
-                }}
-              >
-                Login
-              </Button>
-            </SignedOut>
-
-            <SignedIn>
-              {user?.unsafeMetadata?.role === "recruiter" && (
-                <Link to="/post-job" onClick={() => setMenuOpen(false)}>
-                  <Button variant="destructive" className="rounded-full w-40">
-                    <PenBox size={20} className="mr-2" />
-                    Post a Job
-                  </Button>
-                </Link>
-              )}
-              <div onClick={() => setMenuOpen(false)}>
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10 mx-auto",
-                    },
-                  }}
+          <SignedOut>
+            <Button
+              variant="outline"
+              className="w-40"
+              onClick={() => {
+                setShowSignIn(true);
+                setMenuOpen(false);
+              }}
+            >
+              Login
+            </Button>
+          </SignedOut>
+            
+          <SignedIn>
+            {user?.unsafeMetadata?.role === "recruiter" && (
+              <Link to="/post-job" onClick={() => setMenuOpen(false)}>
+                <Button variant="destructive" className="rounded-full w-40">
+                  <PenBox size={20} className="mr-2" />
+                  Post a Job
+                </Button>
+              </Link>
+            )}
+            <div className="relative z-[9999]"> {/* Important Fix */}
+              <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "w-10 h-10",
+                },
+              }}
+            >
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="My Jobs"
+                  labelIcon={<BriefcaseBusiness size={15} />}
+                  href="/my-jobs"
                 />
-              </div>
-            </SignedIn>
-          </div>
-        )}
+                <UserButton.Link
+                  label="Saved Jobs"
+                  labelIcon={<Heart size={15} />}
+                  href="/saved-jobs"
+                />
+                <UserButton.Action label="manageAccount" />
+              </UserButton.MenuItems>
+            </UserButton>
+            </div>
+          </SignedIn>
+        </div>
+      )}
+
       </nav>
 
       {/* Sign-In Modal */}
